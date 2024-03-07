@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { authSchema } from "../@schemas/auth.schema";
+import { authSchema } from "../schemas/auth.schema";
 import { signIn, signUp } from "../controllers/auth.controller";
 import { Router } from "express";
 

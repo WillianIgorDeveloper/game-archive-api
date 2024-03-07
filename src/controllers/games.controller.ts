@@ -1,12 +1,14 @@
-import { sql } from "../database/postgres";
 import "dotenv/config";
+import { sql } from "../database/postgres";
 
-export const loadGames = async () => {
+export const loadGames = async ({ userID, search }: { userID: string; search?: string }) => {
   try {
     const gamesResponse = await sql`
 			SELECT
         *
       FROM games
+      WHERE name ILIKE ${search ? `%${search}%` : "%%"}
+      AND user_id = ${userID}
 		`;
 
     return {
@@ -17,17 +19,17 @@ export const loadGames = async () => {
       },
     };
   } catch (error) {
-    throw new Error("# loadGames Error");
+    throw new Error(`# loadGames Error => ${error}`);
   }
 };
 
-export const createGame = async ({ name }: { name: string }) => {
+export const createGame = async ({ userID, name }: { userID: string; name: string }) => {
   try {
     await sql`
 			INSERT INTO games 
-        (name)
+        (name, user_id)
       VALUES
-        (${name})
+        (${name}, ${userID})
 		`;
 
     return {
@@ -36,6 +38,6 @@ export const createGame = async ({ name }: { name: string }) => {
       body: {},
     };
   } catch (error) {
-    throw new Error("# createGame Error");
+    throw new Error(`# createGame Error => ${error}`);
   }
 };

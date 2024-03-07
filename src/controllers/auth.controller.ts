@@ -1,20 +1,15 @@
-import { sql } from "../database/postgres";
-import "dotenv/config";
 import * as jwt from "jsonwebtoken";
 import * as bcrypt from "bcrypt";
+import "dotenv/config";
+import { sql } from "../database/postgres";
 
 export const verifyToken = async ({ token }: { token: string }) => {
   try {
-    jwt.verify(token, `${process.env.JWT_KEY}`);
-    return {
-      success: true,
-      message: "Valid token",
-      data: {
-        isTokenValid: true,
-      },
-    };
+    const decoded: any = jwt.verify(token, `${process.env.JWT_KEY}`);
+    if (!decoded) return { success: false, message: "Invalid token", userID: null };
+    return { success: true, message: "Valid token", userID: decoded.id[0].id };
   } catch (error) {
-    throw new Error("VerifyToken Error");
+    throw new Error(`# VerifyToken Error => ${error}`);
   }
 };
 
@@ -54,7 +49,7 @@ export const signUp = async ({ tag, password }: { tag: string; password: string 
       },
     };
   } catch (error) {
-    throw new Error("SignUp Error");
+    throw new Error(`# SignUp Error => ${error}`);
   }
 };
 
@@ -81,7 +76,7 @@ export const signIn = async ({ tag, password }: { tag: string; password: string 
     if (!isValid)
       return {
         success: false,
-        message: "Email or password invalid",
+        message: "Tag or password invalid",
         body: {
           token: null,
         },
@@ -97,6 +92,6 @@ export const signIn = async ({ tag, password }: { tag: string; password: string 
       },
     };
   } catch (error) {
-    throw new Error("SignIn Error");
+    throw new Error(`# SignIn Error => ${error}`);
   }
 };

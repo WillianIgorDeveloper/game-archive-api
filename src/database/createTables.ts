@@ -16,6 +16,7 @@ const createTable = async () => {
     await sql`
 			CREATE TABLE IF NOT EXISTS games (
 				id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
+				user_id uuid NOT NULL REFERENCES users(id),
 				name TEXT NOT NULL,
 				createdat TIMESTAMP DEFAULT NOW()
 			);
