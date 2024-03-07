@@ -5,6 +5,7 @@ const createTable = async () => {
     await sql`
 			CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 		`;
+
     await sql`
 			CREATE TABLE IF NOT EXISTS users (
 				id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
@@ -13,6 +14,7 @@ const createTable = async () => {
 				createdat TIMESTAMP DEFAULT NOW()
 			);
 		`;
+
     await sql`
 			CREATE TABLE IF NOT EXISTS games (
 				id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
@@ -21,10 +23,10 @@ const createTable = async () => {
 				createdat TIMESTAMP DEFAULT NOW()
 			);
 		`;
-    console.log("✔️  Tables created successfully!");
+
+    console.log("🟢  Tables created successfully!");
   } catch (error) {
-    console.log(error);
-    console.log("✖️  Error creating tables!");
+    console.log(`🔴  Error creating tables! => ${error}`);
   }
 };
 

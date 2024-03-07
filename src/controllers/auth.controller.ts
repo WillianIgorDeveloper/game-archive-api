@@ -32,8 +32,10 @@ export const signUp = async ({ tag, password }: { tag: string; password: string 
     const hash = bcrypt.hashSync(password, Number(process.env.SALT));
 
     const newUserID = await sql`
-			INSERT INTO users (tag, password) 
-			VALUES (${tag}, ${hash}) 
+			INSERT INTO users 
+        (tag, password) 
+			VALUES 
+        (${tag}, ${hash}) 
 			RETURNING id
     `;
 
@@ -76,7 +78,7 @@ export const signIn = async ({ tag, password }: { tag: string; password: string 
     if (!isValid)
       return {
         success: false,
-        message: "Tag or password invalid",
+        message: "Tag or password is invalid",
         body: {
           token: null,
         },
