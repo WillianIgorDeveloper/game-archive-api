@@ -12,5 +12,5 @@ server.use(cors());
 server.use("/v1", v1Router);
 
 server.listen(process.env.PORT ?? 2000, () => {
-  console.log(`🟢  Server listening on port ${process.env.PORT ?? 2000}`);
+  console.log(`🟢 Server listening on port ${process.env.PORT ?? 2000}`);
 });

@@ -16,17 +16,54 @@ const createTable = async () => {
 		`;
 
     await sql`
-			CREATE TABLE IF NOT EXISTS games (
+			CREATE TABLE IF NOT EXISTS groups (
 				id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
-				user_id uuid NOT NULL REFERENCES users(id),
-				name TEXT NOT NULL,
+				createdby uuid NOT NULL REFERENCES users(id),
+				tag TEXT NOT NULL,
 				createdat TIMESTAMP DEFAULT NOW()
 			);
 		`;
 
-    console.log("🟢  Tables created successfully!");
+    await sql`
+			CREATE TABLE IF NOT EXISTS users_groups (
+				user_id uuid NOT NULL REFERENCES users(id),
+				group_id uuid NOT NULL REFERENCES groups(id),
+				joinedat TIMESTAMP DEFAULT NOW()
+			);
+		`;
+
+    await sql`
+			CREATE TABLE IF NOT EXISTS games (
+				id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
+				user_id uuid NOT NULL REFERENCES users(id),
+				name TEXT NOT NULL,
+				status_id uuid REFERENCES status(id),
+				score_id uuid REFERENCES score(id),
+				game_link TEXT,
+				createdat TIMESTAMP DEFAULT NOW()
+			);
+		`;
+
+    await sql`
+			CREATE TABLE IF NOT EXISTS status (
+				id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
+				user_id uuid NOT NULL REFERENCES users(id),
+				name TEXT NOT NULL,
+				color TEXT NOT NULL
+			);
+		`;
+
+    await sql`
+			CREATE TABLE IF NOT EXISTS scores (
+				id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
+				user_id uuid NOT NULL REFERENCES users(id),
+				name TEXT NOT NULL
+			);
+		`;
+
+    console.log("🟢 Tables created successfully!");
   } catch (error) {
-    console.log(`🔴  Error creating tables! => ${error}`);
+    console.log(`🔴 Error creating tables! => ${error}`);
   }
 };
 

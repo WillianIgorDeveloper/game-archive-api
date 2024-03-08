@@ -7,7 +7,7 @@ export const verifyToken = async ({ token }: { token: string }) => {
   try {
     const decoded: any = jwt.verify(token, `${process.env.JWT_KEY}`);
     if (!decoded) return { success: false, message: "Invalid token", userID: null };
-    return { success: true, message: "Valid token", userID: decoded.id[0].id };
+    return { success: true, message: "Valid token", userID: decoded.id };
   } catch (error) {
     throw new Error(`# VerifyToken Error => ${error}`);
   }
